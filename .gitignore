@@ -1,3 +1,10 @@
+# new
+examples/
+detector/yolo/data/
+pretrained_models/
+
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

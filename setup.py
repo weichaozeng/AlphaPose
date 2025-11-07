@@ -3,10 +3,10 @@ import platform
 import subprocess
 import time
 
-import numpy as np
-from Cython.Build import cythonize
+# import numpy as np
+# from Cython.Build import cythonize
 from setuptools import Extension, find_packages, setup
-from torch.utils.cpp_extension import BuildExtension, CUDAExtension
+# from torch.utils.cpp_extension import BuildExtension
 
 MAJOR = 0
 MINOR = 5
@@ -85,6 +85,8 @@ def get_version():
 
 
 def make_cython_ext(name, module, sources):
+    import numpy as np
+    from Cython.Build import cythonize
     extra_compile_args = None
     if platform.system() != 'Windows':
         extra_compile_args = {
@@ -102,7 +104,7 @@ def make_cython_ext(name, module, sources):
 
 
 def make_cuda_ext(name, module, sources):
-
+    from torch.utils.cpp_extension import CUDAExtension, BuildExtension
     return CUDAExtension(
         name='{}.{}'.format(module, name),
         sources=[os.path.join(*module.split('.'), p) for p in sources],
@@ -117,6 +119,11 @@ def make_cuda_ext(name, module, sources):
 
 
 def get_ext_modules():
+    try:
+        import numpy as np 
+    except ImportError:
+        print("Warning: numpy not found during extension module setup.")
+        return []
     ext_modules = []
     # only windows visual studio 2013+ support compile c/cuda extensions
     # If you force to compile extension on Windows and ensure appropriate visual studio
@@ -183,6 +190,7 @@ def is_installed(package_name):
 
 
 if __name__ == '__main__':
+    from torch.utils.cpp_extension import CUDAExtension, BuildExtension
     write_version_py()
     setup(
         name='alphapose',
@@ -203,10 +211,11 @@ if __name__ == '__main__':
             'Programming Language :: Python :: 3.4',
             'Programming Language :: Python :: 3.5',
             'Programming Language :: Python :: 3.6',
+            'Programming Language :: Python :: 3.10',
         ],
         license='GPLv3',
         python_requires=">=3",
-        setup_requires=['pytest-runner', 'numpy', 'cython'],
+        setup_requires=['pytest-runner', 'numpy', 'cython', 'torch'],
         tests_require=['pytest'],
         install_requires=get_install_requires(),
         ext_modules=get_ext_modules(),
