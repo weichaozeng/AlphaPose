@@ -361,8 +361,8 @@ def check_input(seq_name):
 
     # for images
     if len(os.path.join(args.dataset_dir, seq_name, args.img_dir_suffix)):
-        
-        for root, dirs, files in os.walk(os.path.join(args.dataset_dir, seq_name, args.img_dir_suffix)):
+        args.inputpath = os.path.join(args.dataset_dir, seq_name, args.img_dir_suffix)
+        for root, dirs, files in os.walk(args.inputpath):
             im_names = files
         im_names = natsort.natsorted(im_names)
         return 'image', im_names
