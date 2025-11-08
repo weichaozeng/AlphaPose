@@ -2,7 +2,7 @@
 examples/
 detector/yolo/data/
 pretrained_models/
-
+trackers/weights/
 
 
 # Byte-compiled / optimized / DLL files
