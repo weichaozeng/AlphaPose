@@ -451,7 +451,8 @@ if __name__ == "__main__":
             print('===========================> Rendering remaining ' + str(writer.count()) + ' images in the queue...', end='\r')
         writer.stop()
         det_loader.stop()
-        cmd = f"/usr/bin/ffmpeg -y -pattern_type glob -i '{args.outputpath}/*.jpg' -r 30 {os.path.join(os.path.dirname(args.outputpath), os.path.basename(seq_name) + '.mp4')}"
+        ext = os.listdir(args.outputpath)[0].split('.')[-1]
+        cmd = f"/usr/bin/ffmpeg -y -pattern_type glob -i '{args.outputpath}/*.{ext}' -r 30 {os.path.join(os.path.dirname(args.outputpath), os.path.basename(seq_name) + '.mp4')}"
         subprocess.run(cmd, shell=True)
         cmd = f"rm -rf {args.outputpath}"
         subprocess.run(cmd, shell=True)
